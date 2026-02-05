@@ -1,0 +1,51 @@
+---
+name: trendsagi
+description: Real-time market trends, keyword analytics, financial intelligence, and AI insights via the TrendsAGI API. Use when users ask for trends, trend analytics, market/industry intelligence, recommendations, crisis events, agents, or to call any TrendsAGI endpoint.
+---
+
+# TrendsAGI Skill
+
+## Quick Start
+Set `TRENDSAGI_API_KEY`, then run a script and return the JSON response.
+
+```bash
+node skills/trendsagi/scripts/get-trends.js --limit 5 --period 24h
+```
+
+## Environment
+Set `TRENDSAGI_API_KEY` with a valid API key.
+Optionally set `TRENDSAGI_BASE_URL` to override the default `https://api.trendsagi.com`.
+
+## Scripts
+Use the scripts below to call the API. Each script prints JSON to stdout and exits non-zero on errors.
+
+`trendsagi-request.js` (generic request runner)
+Use this for any endpoint that does not have a dedicated script.
+
+```bash
+node skills/trendsagi/scripts/trendsagi-request.js --method GET --path /api/trends --query limit=3
+```
+
+`get-trends.js` (list trends)
+
+```bash
+node skills/trendsagi/scripts/get-trends.js --limit 10 --period 24h --sort-by volume --sort-dir desc
+```
+
+`analyze-trend.js` (trigger trend analysis)
+
+```bash
+node skills/trendsagi/scripts/analyze-trend.js --trend-id 123 --force-refresh
+```
+
+## References
+Use these references for full coverage without bloating this file.
+
+- `references/api_reference.md` for API endpoint list.
+- `references/python_client.md` for SDK behaviors, auth details, and method mappings.
+- `references/data_notes.md` for schema hints and data notes.
+
+## Patterns
+If the user asks for a specific endpoint, call `trendsagi-request.js` with `--method` and `--path` and then summarize the response.
+If the user asks for trends plus analysis, run `get-trends.js` first, then call `analyze-trend.js` for the chosen trend.
+If an endpoint accepts query params, pass them using repeated `--query key=value` flags.
